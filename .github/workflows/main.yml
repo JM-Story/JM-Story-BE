@@ -1,0 +1,43 @@
+name: Deploy FastAPI to EC2
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. 저장소 체크아웃
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # 2. Docker 이미지 빌드
+      - name: Build Docker image
+        run: |
+          docker build -t jm-story-be-dev .
+
+      # 3. Docker Hub 로그인
+      - name: Log in to Docker Hub
+        run: echo "${{ secrets.DOCKER_HUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
+
+      # 4. Docker Hub에 이미지 푸시
+      - name: Push Docker image to Docker Hub
+        run: |
+          docker tag jm-story-be-dev ${{ secrets.DOCKER_HUB_USERNAME }}/jm-story-be-dev:latest
+          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/jm-story-be-dev:latest
+
+      # 5. EC2 서버에 SSH 접속하여 기존 컨테이너 중지 및 새 컨테이너 실행
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            docker stop jm-story-be-dev || true
+            docker rm jm-story-be-dev || true
+            docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/jm-story-be-dev:latest
+            docker run -d --name jm-story-be-dev -p 8000:8000 ${{ secrets.DOCKER_HUB_USERNAME }}/jm-story-be-dev:latest
