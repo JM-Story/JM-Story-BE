@@ -1,0 +1,48 @@
+# 📂 Python 가상환경 (venv, .venv 폴더 제외)
+venv/
+.venv/
+
+# 📂 Python 컴파일된 파일 및 캐시 폴더
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# 📂 환경 변수 파일 (보안 중요)
+.env
+*.env
+
+# 📂 프로젝트 실행 시 생성되는 파일
+*.log
+*.sqlite3
+instance/
+
+# 📂 IDE 및 편집기 관련 파일
+.vscode/
+.idea/
+*.iml
+
+# 📂 Jupyter Notebook 체크포인트 (필요 없으면 제거 가능)
+.ipynb_checkpoints/
+
+# 📂 OS별 불필요한 파일
+.DS_Store
+Thumbs.db
+
+# 📂 FastAPI + Uvicorn 실행 관련 파일
+*.pid
+*.sock
+
+# 📂 Docker 관련 파일 (도커 사용 시 필요)
+docker-compose.override.yml
+
+# 📂 Pytest, Coverage 관련
+.coverage
+pytest_cache/
+htmlcov/
+
+# 📂 MyPy, pylint, pyright 등 linter 관련
+.mypy_cache/
+.pylint.d/
+.pytest_cache/
+.pyrightcache/
