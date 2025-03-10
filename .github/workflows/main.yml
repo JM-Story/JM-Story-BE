@@ -18,10 +18,16 @@ jobs:
       - name: Install OpenVPN
         run: sudo apt-get update && sudo apt-get install -y openvpn
 
-      # 3. OpenVPN 연결 (GitHub Secrets에서 OVPN 파일 가져오기)
+      - name: Create OpenVPN Auth File
+        run: |
+          echo "${{ secrets.OPENVPN_USERNAME }}" > auth.txt
+          echo "${{ secrets.OPENVPN_PASSWORD }}" >> auth.txt
+          chmod 600 auth.txt
+      
       - name: Connect to OpenVPN
         run: |
           echo "${{ secrets.OPENVPN_CONFIG }}" > client.ovpn
+          echo "auth-user-pass auth.txt" >> client.ovpn  # 자동 로그인 설정
           sudo openvpn --config client.ovpn --daemon
           sleep 10  # VPN 연결 대기
 
