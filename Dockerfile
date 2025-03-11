@@ -19,4 +19,4 @@ RUN echo "DATABASE_URL=${DATABASE_URL}" > .env
 EXPOSE 8000
 
 # 7. FastAPI 실행 명령
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD alembic upgrade head && uvicorn main:app --host 0.0.0.0 --port 8000
