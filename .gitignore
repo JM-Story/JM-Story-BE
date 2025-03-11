@@ -46,3 +46,8 @@ htmlcov/
 .pylint.d/
 .pytest_cache/
 .pyrightcache/
+
+# Alembic 관련
+alembic.ini
+alembic/versions/__pycache__/
+

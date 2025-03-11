@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from post import router as post_router
 
 app = FastAPI(root_path="/api")
 
@@ -9,6 +10,7 @@ def read_root():
 @app.get("/health")
 def health_check():
     return {"status": "healthy"}
-@app.get("/items/{item_id}")
-def read_item(item_id: int, q: str = None):
-    return {"item_id": item_id, "q": q}
+
+# Post 라우터 등록
+app.include_router(post_router, prefix="/posts", tags=["posts"])
+
