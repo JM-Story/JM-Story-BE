@@ -33,7 +33,7 @@ jobs:
 
       # 4. Docker 이미지 빌드
       - name: Build Docker image
-        run: docker build -t jm-story-be-dev .
+        run: docker build --build-arg DATABASE_URL="${{ secrets.DATABASE_URL }}" -t jm-story-be-dev .
 
       # 5. Docker Hub 로그인
       - name: Log in to Docker Hub
