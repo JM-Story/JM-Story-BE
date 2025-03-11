@@ -2,7 +2,7 @@
 FROM python:3.10
 
 # 2. 작업 디렉토리 설정
-WORKDIR /app
+# WORKDIR /app
 
 # 3. 종속성 파일 복사 후 패키지 설치
 COPY requirements.txt .
@@ -13,7 +13,7 @@ COPY . .
 
 # 5. GitHub Actions에서 환경 변수를 받아 `.env` 파일로 저장
 ARG DATABASE_URL
-RUN echo "DATABASE_URL=${DATABASE_URL}" > /app/.env
+RUN echo "DATABASE_URL=${DATABASE_URL}" > .env
 
 # 6. 컨테이너에서 실행할 포트 설정
 EXPOSE 8000
