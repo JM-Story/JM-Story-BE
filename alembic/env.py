@@ -1,13 +1,18 @@
 from logging.config import fileConfig
+import os
+from dotenv import load_dotenv
 
 from sqlalchemy import create_engine, pool
 from alembic import context
 
-from db import SQLALCHEMY_DATABASE_URL
 from schema import Base
+
+# .env 파일 로드
+load_dotenv()
 
 # Alembic 설정 객체
 config = context.config
+SQLALCHEMY_DATABASE_URL = os.getenv("DATABASE_URL")
 config.set_main_option("sqlalchemy.url", SQLALCHEMY_DATABASE_URL)
 
 # 로깅 설정
