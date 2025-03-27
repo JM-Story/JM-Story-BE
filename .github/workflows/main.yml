@@ -28,7 +28,7 @@ jobs:
       - name: Fetch deployment parameters from SSM
         id: ssm
         run: |
-          ECR_URI=$(aws ssm get-parameter --name "/${{ env.PROJECT }}/${{ env.STAGE }}/ECR_URI" --query "Parameter.Value" --output text)
+          ECR_URI=$(aws ssm get-parameter --name "/${{ env.PROJECT }}/${{ env.STAGE }}/ECR_REPO_URL" --query "Parameter.Value" --output text)
           APP_NAME=$(aws ssm get-parameter --name "/${{ env.PROJECT }}/${{ env.STAGE }}/CODEDEPLOY_APP" --query "Parameter.Value" --output text)
           DEPLOY_GROUP=$(aws ssm get-parameter --name "/${{ env.PROJECT }}/${{ env.STAGE }}/CODEDEPLOY_GROUP" --query "Parameter.Value" --output text)
           S3_BUCKET=$(aws ssm get-parameter --name "/${{ env.PROJECT }}/${{ env.STAGE }}/S3_DEPLOY_BUCKET" --query "Parameter.Value" --output text)
