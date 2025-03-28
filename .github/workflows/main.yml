@@ -38,7 +38,7 @@ jobs:
           APP_NAME=$(aws ssm get-parameter --name "/${{ env.PROJECT }}/${{ env.STAGE }}/CODEDEPLOY_APP" --query "Parameter.Value" --output text)
           DEPLOY_GROUP=$(aws ssm get-parameter --name "/${{ env.PROJECT }}/${{ env.STAGE }}/CODEDEPLOY_GROUP" --query "Parameter.Value" --output text)
           S3_BUCKET=$(aws ssm get-parameter --name "/${{ env.PROJECT }}/${{ env.STAGE }}/S3_DEPLOY_BUCKET" --query "Parameter.Value" --output text)
-          DATABASE_URL=$(aws ssm get-parameter --name "/${{ env.PROJECT }}/${{ env.STAGE }}/DATABASE_URL" --query "Parameter.Value" --output text)
+          DATABASE_URL=$(aws ssm get-parameter --name "/${{ env.PROJECT }}/${{ env.STAGE }}/RDS_ENDPOINT" --query "Parameter.Value" --output text)
 
           echo "ecr_uri=$ECR_URI" >> $GITHUB_OUTPUT
           echo "app_name=$APP_NAME" >> $GITHUB_OUTPUT
