@@ -25,6 +25,12 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
 
+      - name: Debug SSM
+        run: |
+          aws ssm describe-parameters --query "Parameters[?starts_with(Name, '/jm-story/dev')].Name"
+
+
+
       - name: Fetch deployment parameters from SSM
         id: ssm
         run: |
