@@ -32,20 +32,26 @@ jobs:
           APP_NAME=$(aws ssm get-parameter --name "/${{ env.PROJECT }}/${{ env.STAGE }}/CODEDEPLOY_APP" --query "Parameter.Value" --output text)
           DEPLOY_GROUP=$(aws ssm get-parameter --name "/${{ env.PROJECT }}/${{ env.STAGE }}/CODEDEPLOY_GROUP" --query "Parameter.Value" --output text)
           S3_BUCKET=$(aws ssm get-parameter --name "/${{ env.PROJECT }}/${{ env.STAGE }}/S3_DEPLOY_BUCKET" --query "Parameter.Value" --output text)
-
+          DATABASE_URL=$(aws ssm get-parameter --name "/${{ env.PROJECT }}/${{ env.STAGE }}/DATABASE_URL" --query "Parameter.Value" --output text)
+      
           echo "ecr_uri=$ECR_URI" >> $GITHUB_OUTPUT
           echo "app_name=$APP_NAME" >> $GITHUB_OUTPUT
           echo "deploy_group=$DEPLOY_GROUP" >> $GITHUB_OUTPUT
           echo "s3_bucket=$S3_BUCKET" >> $GITHUB_OUTPUT
+          echo "database_url=$DATABASE_URL" >> $GITHUB_OUTPUT
 
       - name: Log in to ECR
         run: |
           aws ecr get-login-password --region ${{ env.AWS_REGION }} \
           | docker login --username AWS --password-stdin ${{ steps.ssm.outputs.ecr_uri }}
 
+      - name: Create .env file
+        run: |
+          echo "DATABASE_URL=${{ steps.ssm.outputs.database_url }}" > .env
+        
       - name: Build Docker image
         run: |
-          docker build --build-arg DATABASE_URL="${{ secrets.DATABASE_URL }}" -t ${{ steps.ssm.outputs.ecr_uri }}:latest .
+          docker build -t ${{ steps.ssm.outputs.ecr_uri }}:latest .
 
       - name: Push Docker image to ECR
         run: |
